@@ -1,5 +1,6 @@
 # Mars_planet_librabry
-CS50 Web Programming Project 1. Mars_planet_librabry is the Python code for a dummy book review website 
+Mars_planet_librabry is the Python code for a dummy book review website
+context: CS50 Web Programming Project 1
 
 ## Project structure: 
 The project is organised as follows:
