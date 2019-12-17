@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>
+    {% block title %}{% endblock %}
+
+  </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <!-- 
+    nav-bar section source code:
+    https://stackoverflow.com/a/20362024       
+        and
+    https://www.codeply.com/go/kTGlK9Axdk 
+  -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('home')}}">
+            <font color={{ SETTINGS.CONSTANTS.NAV_BAR_LINKS_COLOR }}>
+              <b>{{ SETTINGS.CONSTANTS.HOME_PAGE }}</b>
+            </font>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('about')}}">
+            <font color={{ SETTINGS.CONSTANTS.NAV_BAR_LINKS_COLOR }}>
+              <b>{{ SETTINGS.CONSTANTS.ABOUT_PAGE }}</b>
+            </font>
+          </a>
+        </li>
+        <li class="nav-item">
+          {% if current_user.is_authenticated %}
+          <a class="nav-link" href="{{ url_for('search') }}">
+            <font color={{ SETTINGS.CONSTANTS.NAV_BAR_LINKS_COLOR_USER_LOGGED }}>
+              <b>{{ SETTINGS.CONSTANTS.SEARCH_PAGE }}</b>
+            </font>
+          </a>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+    <div class="mx-auto order-0">
+      <a class="navbar-brand mx-auto">
+        <font color={{ SETTINGS.CONSTANTS.LOGO_COLOR }}>
+          <b>{{ SETTINGS.CONSTANTS.PROJECT_LOGO }}</b>
+        </font>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+      <ul class="navbar-nav ml-auto">
+        {% if current_user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link">
+            <font color={{ SETTINGS.CONSTANTS.NAV_BAR_LINKS_COLOR_USER_LOGGED }}>
+              <b>{{ SETTINGS.CONSTANTS.LOGGED_USER_GREETING }} {{ current_user.name }}</b>
+            </font>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('logout') }}">
+            <font color={{ SETTINGS.CONSTANTS.NAV_BAR_LINKS_LOGOUT }}>
+              <b>{{ SETTINGS.CONSTANTS.LOGOUT_PAGE }}</b>
+            </font>
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('login') }}">
+            <font color={{ SETTINGS.CONSTANTS.NAV_BAR_LINKS_COLOR }}>
+              <b>{{ SETTINGS.CONSTANTS.LOGIN_PAGE }}</b>
+            </font>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('register') }}">
+            <font color={{ SETTINGS.CONSTANTS.NAV_BAR_LINKS_COLOR }}>
+              <b>{{ SETTINGS.CONSTANTS.REGISTRATION_PAGE }}</b>
+            </font>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+
+  <!-- 
+    flash message section
+  -->
+
+  <div class="container-fluid" style="margin-top:80px">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="badge badge-{{ category }}" style="margin-left:5%">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- 
+    custom pages body section
+  -->
+  {% block body %}
+  {% endblock %}
+
+  <!-- 
+    footer section
+  -->
+
+  <table style="width: 100%; margin-left:10%; margin-top:5%">
+    <tr>
+      <th>
+        <a href="{{ url_for('home') }}">
+          <b>{{ SETTINGS.CONSTANTS.HOME_PAGE }}</b>
+        </a>
+      </th>
+      <th>
+        <a href="{{ url_for('about') }}">
+          <b>{{ SETTINGS.CONSTANTS.ABOUT_PAGE }}</b>
+        </a>
+      </th>
+      {% if current_user.is_authenticated %}
+      <th>
+        <a href="{{ url_for('search') }}">
+          <b>{{ SETTINGS.CONSTANTS.SEARCH_PAGE }}</b>
+        </a>
+      </th>
+      <th>
+        <a href="{{ url_for('logout') }}">
+          <b>{{ SETTINGS.CONSTANTS.LOGOUT_PAGE }}</b>
+        </a>
+      </th>
+      {% else %}
+      <th>
+        <a href="{{ url_for('login') }}">
+          <b>{{ SETTINGS.CONSTANTS.LOGIN_PAGE }}</b>
+        </a>
+      </th>
+      <th>
+        <a href="{{ url_for('register') }}">
+          <b>{{ SETTINGS.CONSTANTS.REGISTRATION_PAGE }}</b>
+        </a>
+      </th>
+      {% endif %}
+    </tr>
+  </table>
+
+  </div>
+</body>
+
+</html>

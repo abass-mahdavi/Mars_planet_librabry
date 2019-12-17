@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ SETTINGS.CONSTANTS.LOGIN_PAGE_TITLE }}
+{% endblock %}
+
+{% block body %}
+
+<!-- 
+    disclaimer / attribution: 
+    this code is an adaptation of 
+    https://github.com/CoreyMSchafer/code_snippets/blob/master/Python/Flask_Blog/03-Forms-and-Validation/templates/login.html
+    Courtesy: Corey Schafer
+  -->
+
+<div class="col-md-5" style="margin-left:80px">
+    <div class="content-section">
+        <form method="POST" action="" autocomplete="off">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">{{ SETTINGS.CONSTANTS.LOGIN_WELCOME_MESSAGE|safe }}</legend>
+                <div class="form-group">
+                    {{ form.username.label(class="form-control-label") }}
+                    {% if form.username.errors %}
+                    {{ form.username(class=SETTINGS.FORMS.FORM_CONTROL_INVALID) }}
+                    <div class="invalid-feedback">
+                        {% for error in form.username.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.username(class=SETTINGS.FORMS.FORM_CONTROL) }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label(class="form-control-label") }}
+                    {% if form.password.errors %}
+                    {{ form.password(class=SETTINGS.FORMS.FORM_CONTROL_INVALID) }}
+                    <div class="invalid-feedback">
+                        {% for error in form.password.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.password(class=SETTINGS.FORMS.FORM_CONTROL) }}
+                    {% endif %}
+                </div>
+                <div class="form-check">
+                    {{ form.remember(class="form-check-input") }}
+                    {{ form.remember.label(class="form-check-label") }}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+            <small class="text-muted ml-2">
+                <a href="#">{{ SETTINGS.CONSTANTS.FORGOT_PASSWORD}}</a>
+            </small>
+        </form>
+    </div>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            {{ SETTINGS.CONSTANTS.NEED_AN_ACCOUNT}}
+            <a class="ml-2" href="{{ url_for('register') }}">{{ SETTINGS.CONSTANTS.REGISTER_NOW}}</a>
+        </small>
+    </div>
+</div>
+{% endblock body %}

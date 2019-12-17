@@ -1,0 +1,165 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ SETTINGS.CONSTANTS.BOOK_PAGE }}
+{% endblock %}
+
+{% block body %}
+
+<!-- 
+    book details
+  -->
+
+<div class "container" style="margin-left:5%">
+    <h4>{{ SETTINGS.CONSTANTS.FEATURED_BOOK }}</h4>
+</div>
+
+<div class="col-md-9">
+    <div class="content-section" style="margin-top:2%">
+        <table class="table table-bordered " style="width: 60%; color: blanchedalmond; margin-left:15%">
+            <colgroup>
+                <col span="1" style="width: 50%;">
+                <col span="1" style="width: 50%;">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>{{ SETTINGS.CONSTANTS.ISBN }}</td>
+                    <td>{{ book.get(SETTINGS.CONSTANTS.BOOK_DATAS).get("isbn") }}</td>
+                </tr>
+
+                <tr>
+                    <td>{{ SETTINGS.CONSTANTS.AUTHOR }}</td>
+                    <td>{{ book.get(SETTINGS.CONSTANTS.BOOK_DATAS).get("author_name") }}</td>
+                </tr>
+
+                <tr>
+                    <td>{{ SETTINGS.CONSTANTS.TITLE }}</td>
+                    <td>{{ book.get(SETTINGS.CONSTANTS.BOOK_DATAS).get("title") }}</td>
+                </tr>
+
+                <tr>
+                    <td>{{ SETTINGS.CONSTANTS.PUBLICATION_YEAR }}</td>
+                    <td>{{ book.get(SETTINGS.CONSTANTS.BOOK_DATAS).get("year") }}</td>
+                </tr>
+
+                <tr>
+                    <td>{{ SETTINGS.CONSTANTS.NUMBER_OF_MPL_REVIEWS }}</td>
+                    <td>{{ book.get(SETTINGS.CONSTANTS.NUMBER_OF_REVIEWS) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ SETTINGS.CONSTANTS.AVERAGE_MPL_RATING }}</td>
+                    <td>{{ book.get(SETTINGS.CONSTANTS.AVERAGE_REVIEW_SCORE) }}</td>
+                </tr>
+
+                <tr>
+                    <td>{{ SETTINGS.CONSTANTS.GOODREADS_REVIEWS_COUNT }}</td>
+                    <td>{{ book.get(SETTINGS.CONSTANTS.GOODREADS_DATAS).get("work_reviews_count") }}</td>
+
+                <tr>
+                    <td>{{ SETTINGS.CONSTANTS.GOODREADS_AVERAGE_REVIEW_SCORE }}</td>
+                    <td>{{ book.get(SETTINGS.CONSTANTS.GOODREADS_DATAS).get("average_rating") }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+        <h9 style="color: blanchedalmond; margin-left:15%">{{ SETTINGS.CONSTANTS.MPL_STANDS_FOR_MARS_PLANET_LIBRARY }}
+        </h9>
+    </div>
+</div>
+
+
+
+
+<!-- 
+    book review form
+-->
+
+
+
+<div class "container" style="margin-left:5%">
+    {% if already_rated %}
+    <h4><br>{{ SETTINGS.CONSTANTS.BOOK_ALREADY_REVIEWED_MESSAGE }}</h4>
+    {% else %}
+    {% if book.get(SETTINGS.CONSTANTS.NUMBER_OF_REVIEWS) == 0 %}
+    <h4><br>{{ SETTINGS.CONSTANTS.BE_THE_FIRST_TO_REVIEW_MESSAGE }}</h4>
+    {% else %}
+    <h4><br>{{ SETTINGS.CONSTANTS.RATE_AND_REVIEW_MESSAGE }}</h4>
+    {% endif %}
+    <div class="col-md-6" style="margin-left:5%">
+        <div class="content-section">
+            <form method="POST" action="" autocomplete="off">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group" style="color: blanchedalmond">
+                        <br>{{ SETTINGS.CONSTANTS.PLEASE_SELECT_A_RATING_1_5 }}<br>
+                        {% for subfield in form.rating %}
+                        <tr>
+                            <td>{{ subfield }}</td>
+                            <td>{{ subfield.label }}</td>
+                            <td>
+                                <font color="black">......</font>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group" style=" color: blanchedalmond">
+                        {{ form.review.label(class="form-control-label") }}
+                        {{ form.review(class=SETTINGS.FORMS.FORM_CONTROL) }}
+                    </div>
+                </fieldset>
+                <div class="form-group" style="margin-left:0%">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+<!-- 
+    book reviews section
+  -->
+
+  {% if book.get(SETTINGS.CONSTANTS.NUMBER_OF_REVIEWS)!=0 %}  
+<div class "container" style="margin-left:5%">
+    <h4><br>{{ SETTINGS.CONSTANTS.BOOK_REVIEWS }}</h4>
+</div>
+<div class="col-md-9">
+    <div class="content-section" style="margin-top:2%">
+        <table class="table table-bordered " style="width: 60%; color: blanchedalmond; margin-left:15%">
+            <thead class="table-black">
+                <tr>
+                    <th>
+                        <font color={{ SETTINGS.CONSTANTS.NAV_BAR_LINKS_COLOR }}>
+                            {{ SETTINGS.CONSTANTS.REVIEWER_USERNAME }}
+                        </font>
+                    </th>
+                    <th>
+                        <font color={{ SETTINGS.CONSTANTS.NAV_BAR_LINKS_COLOR }}>
+                            {{ SETTINGS.CONSTANTS.RATING }}
+                        </font>
+                    </th>
+                    <th>
+                        <font color={{ SETTINGS.CONSTANTS.NAV_BAR_LINKS_COLOR }}>
+                            {{ SETTINGS.CONSTANTS.REVIEW }}
+                        </font>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book_review in book.get(SETTINGS.CONSTANTS.REVIEWS) %}
+                <tr>
+                    <td>{{book_review[0]}} </td>
+                    <td>{{book_review[1]}}</td>
+                    <td>{{book_review[2]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
